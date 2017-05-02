@@ -1,0 +1,135 @@
+\section{Modelo Relacional}
+
+\entidad{Maestro Inscriptor}{\primaryKey{n\'umeroDePlacaInstructor}, nombre, apellido, numeroDeCertificado, \ForeignKey{nombreDeGraduación}, \ForeignKey{nombreDeEscuela} }
+
+\textbf{PK} = \textbf{CK} = \{ numeroDePlacaInstructor \}
+
+\textbf{FK} = \{ nombreDeGraduación,nombreDeEscuela \}
+
+\textit{MaestroInscriptor.nombreDeGraduación} debe estar en \textit{Graduación.nombre}
+
+\textit{MaestroInscriptor.nombreDeEscuela} debe estar en \textit{Escuela.Nombre}\\
+
+\entidad{Escuela}{\primaryKey{nombre}}
+
+\textbf{PK} = \textbf{CK} = \{ nombre \}\\
+
+\entidad{País}{\primaryKey{nombre}}
+
+\textbf{PK} = \textbf{CK} = \{ nombre \}\\
+
+\entidad{Graduación}{\primaryKey{nivel}}
+
+\textbf{PK} = \textbf{CK} = \{ nivel \}\\
+
+\entidad{Participante}{\primaryKey{DNI}, n\'umeroDeCertificado, nombre, apellido, \ForeignKey{nombreDeEscuela}, \ForeignKey{nivelDeGraduación}, foto}
+
+\textbf{PK} = \textbf{CK} = \{ DNI \}
+
+\textbf{FK} = \{ nombreDeEscuela, nivelDeGraduación \}
+
+\textit{Participante.nombreDeEscuela} debe estar en \textit{Escuela.nombre}
+
+\textit{Participante.nivelDeGraduación} debe estar en \textit{Graduación.nivel}\\
+
+\entidad{Coach}{\primaryKey{\ForeignKey{DNI}}}
+
+\textbf{PK} = \textbf{CK} = \textbf{FK} = \{ DNI \}
+
+\textit{Coach.DNI} debe estar en \textit{Participante.DNI}\\
+
+\entidad{Competidor}{\primaryKey{\ForeignKey{DNI}}, peso, fechaDeNacimiento, \ForeignKey{suplente}, \ForeignKey{titular}, \ForeignKey{sexo}}
+
+\textbf{PK} = \textbf{CK} = \{ DNI \}
+
+\textbf{FK} = \{ DNI, suplente, titular, sexo \}
+
+\textit{Competidor.sexo} debe estar en \textit{Género.valor}
+
+\textit{Competidor.titular} puede tener o no valor
+
+\textit{Competidor.suplente} puede tener o no valor
+
+\textit{Competidor.titular} debe estar en \textit{Equipo.nombreDeFantasia}
+
+\textit{Competidor.suplente} debe estar en \textit{Equipo.nombreDeFantasia}\\
+
+\entidad{Edad}{\primaryKey{nombre},edadMinima, edadMáxima}
+
+\textbf{PK} = \textbf{CK} = \{ nombre \}\\
+
+\entidad{Peso}{\primaryKey{nombre}, pesoMinimo, pesoMáximo}
+
+\textbf{PK} = \textbf{CK} = \{ nombre \}\\
+
+\entidad{Modalidad}{\primaryKey{nombre}}
+
+\textbf{PK} = \textbf{CK} = \{ nombre \}
+
+\textit{Modalidad.nombre} debe estar en \textit{CompetenciaIndividual.nombre} o (exclusivo) en \textit{CompetenciaIndividual.nombre}\\
+
+\entidad{CompetenciaIndividual}{\primaryKey{\ForeignKey{nombre}}, tipo}
+
+\textbf{PK} = \textbf{CK} = \textbf{FK} = \{ nombre \}
+
+\textit{CompetendiaIndividual.nombre} debe estar en \textit{Modalidad.nombre}\\
+
+\entidad{CombatePorEquipos}{\primaryKey{\ForeignKey{nombre}}}
+
+\textbf{PK} = \textbf{CK} = \textbf{FK} = \{ nombre \}
+
+\textit{CombatePorEquipos.nombre} debe estar en \textit{Modalidad.nombre}\\
+
+\entidad{Equipo}{\primaryKey{nombreDeFantasia}}
+
+\textbf{PK} = \textbf{CK} = \{ nombreDeFantasia \}\\
+
+\entidad{Género}{\primaryKey{valor}}
+
+\textbf{PK} = \textbf{CK} = \{ valor \}
+
+\entidad{Ring}{\primaryKey{numeroDeRing}}
+
+\textbf{PK} = \textbf{CK} = \{ númeroDeRing \}\\
+
+\entidad{Árbitro}{\primaryKey{n\'umeroDePlaca}, nombre, apellido, \ForeignKey{nombreDePaís}, \ForeignKey{graduación}}
+
+\textbf{PK} = \textbf{CK} = \{ numeroDePlaca \}
+
+\textbf{FK} = \{ nombreDePaís, graduación \}
+
+\textit{Árbitro.graduación} debe estar en \textit{graduación.valor}
+
+\textit{Árbitro.nombreDePaís} debe estar en \textit{País.nombre}
+
+\textit{Árbitro.númeroDePlaca} debe estar en \textit{Juez} o en \textit{Árbitro Central} o en \textit{Presidente de Mesa} o en \textit{Suplente}\\
+
+\entidad{Juez}{\primaryKey{\ForeignKey{númeroDePlaca}}, \ForeignKey{númeroDeRing}}
+ 
+\textbf{CK} = \textbf{PK} = \{ númeroDePlaca \}
+ 
+\textbf{FK} = \{ númeroDePlaca, númeroDeRing \}
+ 
+\textit{Juez.númeroDeRing} debe estar en \textit{Ring.númeroDeRing}
+
+\textit{Juez.númeroDePlaca} debe estar en \textit{Ring.númeroDePlaca}\\
+
+\entidad{ÁrbitroCentral}{\primaryKey{\ForeignKey{númeroDePlaca}}, \ForeignKey{númeroDeRing}}
+
+\textbf{CK} = \textbf{PK} = \{ númeroDePlaca \}
+ 
+\textbf{FK} = \{ númeroDePlaca, númeroDeRing \}
+ 
+\textit{ÁrbitroCentral.númeroDeRing} debe estar en \textit{Ring.númeroDeRing}
+
+\textit{ÁrbitroCentral.númeroDePlaca} debe estar en \textit{Ring.númeroDePlaca}\\
+
+\entidad{PresidenteDeMesa}{\primaryKey{\ForeignKey{númeroDePlaca}}, \ForeignKey{númeroDeRing}}
+
+\textbf{CK} = \textbf{PK} = \{ númeroDePlaca \}
+ 
+\textbf{FK} = \{ númeroDePlaca, númeroDeRing \}
+ 
+\textit{PresidenteDeMesa.númeroDeRing} debe estar en \textit{Ring.númeroDeRing}
+
+\textit{PresidenteDeMesa.númeroDePlaca} debe estar en \textit{Ring.númeroDePlaca}

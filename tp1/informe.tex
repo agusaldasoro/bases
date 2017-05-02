@@ -28,192 +28,38 @@
 \newcommand{\ForeignKey}[1]{\dashuline{#1}}
 \begin{document}
 
-\titulo{Trabajo Practico I}
-\subtitulo{Sistema de inscripción Mundial de Irlanda 2017}
+\titulo{Trabajo Pr\'actico I}
+\subtitulo{Sistema de Inscripción Mundial de Irlanda 2017}
 
 \fecha{\today}
 
 \materia{Bases de datos}
-\integrante{Previgliano, Fabricio}{430/13}{fjprevi@gmail.com}
 \integrante{Aldasoro, Agustina}{86/13}{agusaldasoro@gmail.com}
-\integrante{Chamo, Nicolás}{282/13}{nicochamo@hotmail.com}
-\integrante{Zimenspitz, Ezequiel}{155/13
-}{ezeqzim@gmail.com}
+\integrante{Chamo, Nicolás}{282/13}{nicochamo@gmail.com}
+\integrante{Previgliano, Fabricio}{430/13}{fjprevi@gmail.com}
+\integrante{Zimenspitz, Ezequiel}{155/13}{ezeqzim@gmail.com}
+
 \maketitle
 \newpage
+
 \tableofcontents
- 	\newpage
+\newpage
 
-\section{Diagrama Entidad Relación}
-\section{Modelo Relacional}
+\input{introduccion}
+\newpage
 
-\entidad{Maestro Inscriptor}{\primaryKey{numeroDePlacaInstructor},nombre, apellido, numeroDeCertificado, \ForeignKey{nombreDeGraduación}, \ForeignKey{nombreDeEscuela} }
+\input{der}
+\newpage
 
-PK = CK = \{ numeroDePlacaInstructor\}
+\input{mr}
+\newpage
 
-FK = \{ nombreDeGraduación,nombreDeEscuela\}
+\input{asunciones}
+\newpage
 
-MaestroInscriptor.nombreDeGraduación debe estar en Graduación.nombre
+\input{sql}
+\newpage
 
-MaestroInscriptor.nombreDeEscuela debe estar en Escuela.Nombre
-
-\smallskip
-\entidad{Escuela}{\primaryKey{nombre}}
-
-PK = CK = \{ nombre\}
-\smallskip
-
-\entidad{País}{\primaryKey{nombre}}
-
-PK = CK = \{ nombre\}
-\smallskip
-
-\entidad{Graduación}{\primaryKey{nivel}}
-
-PK = CK = \{ nivel\}
-
-\smallskip
-
-\entidad{Participante}{\primaryKey{DNI},numeroDeCertificado,nombre, apellido, \ForeignKey{nombreDeEscuela}, \ForeignKey{nivelDeGraduación}, foto}
-
-PK = CK = \{ DNI\}
-
-FK = \{ nombreDeEscuela, nivelDeGraduación \}
-
-Participante.nombreDeEscuela debe estar en Escuela.nombre
-
-Participante.nivelDeGraduación debe estar en Graduación.nivel
-
-\smallskip
-
-\entidad{Coach}{\primaryKey{\ForeignKey{DNI}}}
-
-PK = CK = FK = \{ DNI\}
-
-Coach.DNI debe estar en Participante.DNI
-
-\smallskip
-
-\entidad{Competidor}{\primaryKey{\ForeignKey{DNI}}, peso, fechaDeNacimiento, \ForeignKey{suplente}, \ForeignKey{titular}, \ForeignKey{sexo}}
-
-PK = CK = \{DNI\}
-
-FK = \{ DNI, suplente, titular, sexo \}
-
-Competidor.sexo debe estar en Género.valor
-
-Competidor.titular puede tener o no valor
-
-Competidor.suplente puede tener o no valor
-
-Competidor.titular debe estar en Equipo.nombreDeFantasia
-
-Competidor.suplente debe estar en Equipo.nombreDeFantasia
-
-\smallskip
-
-\entidad{Edad}{\primaryKey{nombre},edadMinima, edadMáxima}
-
-PK = CK = \{ nombre \}
-\smallskip
-
-\entidad{Peso}{\primaryKey{nombre}, pesoMinimo, pesoMáximo}
-
-PK = CK = \{ nombre \}
-\smallskip
-
-\entidad{Modalidad}{\primaryKey{nombre}}
-
-PK = CK = \{ nombre \}
-
-Modalidad.nombre debe estar en CompetenciaIndividual.nombre o (exclusivo) en CompetenciaIndividual.nombre
-
-\smallskip
-
-\entidad{CompetenciaIndividual}{\primaryKey{\ForeignKey{nombre}}, tipo}
-
-PK = CK = FK = \{ nombre \}
-
-CompetendiaIndividual.nombre debe estar en Modalidad.nombre 
-\smallskip
-
-\entidad{CombatePorEquipos}{\primaryKey{\ForeignKey{nombre}}}
-
-PK = CK = FK = \{ nombre \}
-
-CombatePorEquipos.nombre debe estar en Modalidad.nombre
-
-\smallskip
-
-\entidad{Equipo}{\primaryKey{nombreDeFantasia}}
-
-PK = CK = \{ nombreDeFantasia \}
-
-\smallskip
-
-\entidad{Género}{\primaryKey{valor}}
-
-PK = CK = \{ valor \}
-\smallskip
-
-\entidad{Ring}{\primaryKey{numeroDeRing}}
-
-PK = CK = \{ númeroDeRing \}
-
-\smallskip
-
-\entidad{Árbitro}{\primaryKey{numeroDePlaca}, nombre, apellido, \ForeignKey{nombreDePaís}, \ForeignKey{graduación}}
-
-PK = CK = \{ numeroDePlaca \}
-
-FK = \{ nombreDePaís, graduación \}
-
-Árbitro.graduación debe estar en graduación.valor
-
-Árbitro.nombreDePaís debe estar en País.nombre
-
-Árbitro.númeroDePlaca debe estar en Juez o en Árbitro Central o en Presidente de Mesa o en Suplente
-
-\smallskip
-
-\entidad{Juez}{\primaryKey{\ForeignKey{númeroDePlaca}}, \ForeignKey{númeroDeRing}}
- 
- CK = PK = \{ númeroDePlaca \}
- 
- FK = \{ númeroDePlaca, númeroDeRing \}
- 
-Juez.númeroDeRing debe estar en Ring.númeroDeRing
-
-Juez.númeroDePlaca debe estar en Ring.númeroDePlaca
-\smallskip
-
-\entidad{ÁrbitroCentral}{\primaryKey{\ForeignKey{númeroDePlaca}}, \ForeignKey{númeroDeRing}}
-
- CK = PK = \{ númeroDePlaca \}
- 
- FK = \{ númeroDePlaca, númeroDeRing \}
- 
-ÁrbitroCentral.númeroDeRing debe estar en Ring.númeroDeRing
-
-ÁrbitroCentral.númeroDePlaca debe estar en Ring.númeroDePlaca
-\smallskip
-
-\entidad{PresidenteDeMesa}{\primaryKey{\ForeignKey{númeroDePlaca}}, \ForeignKey{númeroDeRing}}
-
- CK = PK = \{ númeroDePlaca \}
- 
- FK = \{ númeroDePlaca, númeroDeRing \}
- 
-PresidenteDeMesa.númeroDeRing debe estar en Ring.númeroDeRing
-
-PresidenteDeMesa.númeroDePlaca debe estar en Ring.númeroDePlaca
-
-\smallskip
-
-\section{Consultas SQL}
-
-\section{Objetivo}
-
-\section{Conclusiones}
+\input{conclusiones}
 
 \end{document}
