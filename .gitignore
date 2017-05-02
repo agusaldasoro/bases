@@ -178,3 +178,6 @@ TSWLatexianTemp*
 
 # KBibTeX
 *~[0-9]*
+
+# TP1
+/tp1/informe.pdf
