@@ -1,1 +1,25 @@
 \section{Diagrama Entidad Relación}
+\subsection{Diagrama}
+\subsection{Restricciones}
+
+\begin{enumerate}
+\item Por escuela, la cantidad de coachs que presentan es $\lceil$ cantidad de alumnos / 5 $\rceil$.
+\item Un coach no puede acompañarse a sí mismo en una categor\'ia individual.
+\item Un coach no puede acompañar a un equipo que él pertenezca en una categor\'ia grupal.
+\item Cada competidor, se puede presentar, a lo sumo, a una categoría de la misma modalidad.
+\item Los competidores s\'olo se pueden presentar a categor\'ias que correspondan a sus caracter\'isticas (g\'enero, edad y/o peso).
+\item Los equipos están integrados por 5 titulares y 3 suplentes.
+\item Cada competidor pertenece a un único equipo, ya sea como titular o como suplente.
+\item Todos los competidores de un mismo equipo deben pertenecer a la misma escuela.
+\item En el ring, los \'arbitros suplentes deben ser al menos 3 y los jueces son m\'as de 1.
+\item La graduaci\'on de cada \'arbitro es superior a la graduaci\'on de la categor\'ia que arbitra.
+\item El nivel de la graduacion se encuentra entre 1 y 6.
+\item Un jugador s\'olo puede pertenecer a la terna de categor\'ias que participa.
+\item Dada una categor\'ia individual, los tres primeros puestos son tres personas distintas.
+\item Un equipo s\'olo puede pertenecer a la terna de las categor\'ias que participa.
+\item Dada una categor\'ia grupal, los tres primeros puestos son tres equipos distintos.
+\item La modalidad ``Combate'' es la \'unica que se clasifica por Peso.
+\item Las modalidades ``Combate'', ``Formas'' y ``Salto'' son las \'unicas que se clasifican por Edad.
+\item Para todas las categor\'ias que presentan la misma modalidad, si se clasifican por edad, los rangos de edad son disjuntos.
+\item Para todas las categor\'ias que presentan la misma modalidad, si se clasifican por peso, los rangos de peso son disjuntos.
+\end{enumerate}
