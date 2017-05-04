@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.34)
 # Database: tp1
-# Generation Time: 2017-05-04 04:32:51 +0000
+# Generation Time: 2017-05-04 18:58:46 +0000
 # ************************************************************
 
 
@@ -26,38 +26,38 @@
 LOCK TABLES `Arbitro` WRITE;
 /*!40000 ALTER TABLE `Arbitro` DISABLE KEYS */;
 
-INSERT INTO `Arbitro` (`numeroDePlaca`, `nombre`, `apellido`, `nombreDePais`, `nivelDeGraduacion`, `tipo`)
+INSERT INTO `Arbitro` (`numeroDePlaca`, `nombre`, `apellido`, `nombreDePais`, `nivelDeGraduacion`)
 VALUES
-	(1,'Juan','Perez','Argentina',6,'Juez'),
-	(2,'Juan','Perez','Brasil',6,'Juez'),
-	(3,'Juan','Perez','Paraguay',6,'Juez'),
-	(4,'Juan','Perez','Uruguay',6,'Juez'),
-	(5,'Juan','Perez','Chile',6,'Juez'),
-	(6,'Juan','Perez','Argentina',6,'ArbitroCentral'),
-	(7,'Juan','Perez','Brasil',6,'ArbitroCentral'),
-	(8,'Juan','Perez','Paraguay',6,'ArbitroCentral'),
-	(9,'Juan','Perez','Uruguay',6,'ArbitroCentral'),
-	(10,'Juan','Perez','Chile',6,'ArbitroCentral'),
-	(11,'Juan','Perez','Argentina',6,'PresidenteDeMesa'),
-	(12,'Juan','Perez','Brasil',6,'PresidenteDeMesa'),
-	(13,'Juan','Perez','Paraguay',6,'PresidenteDeMesa'),
-	(14,'Juan','Perez','Uruguay',6,'PresidenteDeMesa'),
-	(15,'Juan','Perez','Chile',6,'PresidenteDeMesa'),
-	(16,'Juan','Perez','Argentina',6,'Suplente'),
-	(17,'Juan','Perez','Brasil',6,'Suplente'),
-	(18,'Juan','Perez','Paraguay',6,'Suplente'),
-	(19,'Juan','Perez','Uruguay',6,'Suplente'),
-	(20,'Juan','Perez','Chile',6,'Suplente'),
-	(21,'Juan','Perez','Argentina',6,'Suplente'),
-	(22,'Juan','Perez','Brasil',6,'Suplente'),
-	(23,'Juan','Perez','Paraguay',6,'Suplente'),
-	(24,'Juan','Perez','Uruguay',6,'Suplente'),
-	(25,'Juan','Perez','Chile',6,'Suplente'),
-	(26,'Juan','Perez','Argentina',6,'Suplente'),
-	(27,'Juan','Perez','Brasil',6,'Suplente'),
-	(28,'Juan','Perez','Paraguay',6,'Suplente'),
-	(29,'Juan','Perez','Uruguay',6,'Suplente'),
-	(30,'Juan','Perez','Chile',6,'Suplente');
+	(1,'Juan','Perez','Argentina',6),
+	(2,'Juan','Perez','Brasil',6),
+	(3,'Juan','Perez','Paraguay',6),
+	(4,'Juan','Perez','Uruguay',6),
+	(5,'Juan','Perez','Chile',6),
+	(6,'Juan','Perez','Argentina',6),
+	(7,'Juan','Perez','Brasil',6),
+	(8,'Juan','Perez','Paraguay',6),
+	(9,'Juan','Perez','Uruguay',6),
+	(10,'Juan','Perez','Chile',6),
+	(11,'Juan','Perez','Argentina',6),
+	(12,'Juan','Perez','Brasil',6),
+	(13,'Juan','Perez','Paraguay',6),
+	(14,'Juan','Perez','Uruguay',6),
+	(15,'Juan','Perez','Chile',6),
+	(16,'Juan','Perez','Argentina',6),
+	(17,'Juan','Perez','Brasil',6),
+	(18,'Juan','Perez','Paraguay',6),
+	(19,'Juan','Perez','Uruguay',6),
+	(20,'Juan','Perez','Chile',6),
+	(21,'Juan','Perez','Argentina',6),
+	(22,'Juan','Perez','Brasil',6),
+	(23,'Juan','Perez','Paraguay',6),
+	(24,'Juan','Perez','Uruguay',6),
+	(25,'Juan','Perez','Chile',6),
+	(26,'Juan','Perez','Argentina',6),
+	(27,'Juan','Perez','Brasil',6),
+	(28,'Juan','Perez','Paraguay',6),
+	(29,'Juan','Perez','Uruguay',6),
+	(30,'Juan','Perez','Chile',6);
 
 /*!40000 ALTER TABLE `Arbitro` ENABLE KEYS */;
 UNLOCK TABLES;

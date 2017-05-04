@@ -113,7 +113,6 @@ CREATE TABLE IF NOT EXISTS Arbitro (
   apellido varchar(255) NOT NULL,
   nombreDePais varchar(255) NOT NULL,
   nivelDeGraduacion int NOT NULL,
-  tipo varchar(255) NOT NULL,
   PRIMARY KEY (numeroDePlaca),
   FOREIGN KEY (nombreDePais) REFERENCES Pais (nombre),
   FOREIGN KEY (nivelDeGraduacion) REFERENCES Graduacion (nivel)
