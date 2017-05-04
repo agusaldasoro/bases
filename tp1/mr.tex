@@ -151,6 +151,7 @@
 \entidad{Categoría Individual}{\primaryKey{\ForeignKey{idCategoría}}, \ForeignKey{nombreDeModalidad}, \ForeignKey{nivelDeGraduación},\ForeignKey{nombreDePeso}, \ForeignKey{DNIPrimerPuesto}, \ForeignKey{DNISegundoPuesto},\ForeignKey{DNITercerPuesto}}
 
 \textbf{CK} = \textbf{PK} = \{ idCategoria \}
+
 \textbf{FK} = \{ nombreDeModalidad, nivelDeGraduación,nombreDePeso, DNIPrimerPuesto, DNISegundoPuesto, DNITercerPuesto\}
 
 
@@ -189,6 +190,7 @@
 \entidad{Categoría Grupal}{\primaryKey{\ForeignKey{idCategoría}},\ForeignKey{nombreDeModalidad}, \ForeignKey{NombrePrimerPuesto}, \ForeignKey{nombreSegundoPuesto},\ForeignKey{nombreTercerPuesto}}
 
 \textbf{CK} = \textbf{PK} = \{ idCategoria \}
+
 \textbf{FK} = \{ nombreDeModalidad,  NombrePrimerPuesto, nombreSegundoPuesto, nombreTercerPuesto\}
 
 \textit{CategoríaGrupal.nombreDeModalidad} debe estar en \textit{CombatePorEquipos.nombre}
