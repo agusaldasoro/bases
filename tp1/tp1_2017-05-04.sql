@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.34)
 # Database: tp1
-# Generation Time: 2017-05-04 18:58:46 +0000
+# Generation Time: 2017-05-04 19:58:19 +0000
 # ************************************************************
 
 
@@ -84,16 +84,51 @@ UNLOCK TABLES;
 # Dump of table Categoria
 # ------------------------------------------------------------
 
+LOCK TABLES `Categoria` WRITE;
+/*!40000 ALTER TABLE `Categoria` DISABLE KEYS */;
+
+INSERT INTO `Categoria` (`idCategoria`, `numeroDeRing`, `genero`, `nombreDeEdad`)
+VALUES
+	(1,1,'M','Adultos'),
+	(2,1,'F','Adultos'),
+	(3,2,'M','Juveniles'),
+	(4,3,'F','Juveniles'),
+	(5,4,'M','Adultos'),
+	(6,5,'F','Adultos');
+
+/*!40000 ALTER TABLE `Categoria` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table CategoriaGrupal
 # ------------------------------------------------------------
 
+LOCK TABLES `CategoriaGrupal` WRITE;
+/*!40000 ALTER TABLE `CategoriaGrupal` DISABLE KEYS */;
+
+INSERT INTO `CategoriaGrupal` (`idCategoria`, `nombreDeModalidad`, `nombrePrimerPuesto`, `nombreSegundoPuesto`, `nombreTercerPuesto`)
+VALUES
+	(1,'Combate Por Equipos','Hambursecta','Milasecta','Pizzasecta');
+
+/*!40000 ALTER TABLE `CategoriaGrupal` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table CategoriaIndividual
 # ------------------------------------------------------------
 
+LOCK TABLES `CategoriaIndividual` WRITE;
+/*!40000 ALTER TABLE `CategoriaIndividual` DISABLE KEYS */;
+
+INSERT INTO `CategoriaIndividual` (`idCategoria`, `nombreDeModalidad`, `nivelDeGraduacion`, `nombreDePeso`, `dniPrimerPuesto`, `dniSegundoPuesto`, `dniTercerPuesto`)
+VALUES
+	(2,'Combate',3,'Flacos',1,2,3),
+	(3,'Formas',4,NULL,NULL,NULL,NULL),
+	(4,'Rotura de Potencia',5,NULL,7,8,9),
+	(5,'Salto',2,NULL,NULL,NULL,NULL);
+
+/*!40000 ALTER TABLE `CategoriaIndividual` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table Coach
@@ -213,11 +248,11 @@ UNLOCK TABLES;
 LOCK TABLES `Equipo` WRITE;
 /*!40000 ALTER TABLE `Equipo` DISABLE KEYS */;
 
-INSERT INTO `Equipo` (`nombreDeFantasia`)
+INSERT INTO `Equipo` (`nombreDeFantasia`, `idCategoria`)
 VALUES
-	('Hambursecta'),
-	('Milasecta'),
-	('Pizzasecta');
+	('Hambursecta', 1),
+	('Milasecta', 1),
+	('Pizzasecta', 1);
 
 /*!40000 ALTER TABLE `Equipo` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -350,6 +385,20 @@ UNLOCK TABLES;
 # Dump of table ParticipaEn
 # ------------------------------------------------------------
 
+LOCK TABLES `ParticipaEn` WRITE;
+/*!40000 ALTER TABLE `ParticipaEn` DISABLE KEYS */;
+
+INSERT INTO `ParticipaEn` (`idCategoria`, `dni`)
+VALUES
+	(2,1),
+	(2,2),
+	(2,3),
+	(4,7),
+	(4,8),
+	(4,9);
+
+/*!40000 ALTER TABLE `ParticipaEn` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table Participante

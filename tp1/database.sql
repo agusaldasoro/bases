@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS Genero (
 
 CREATE TABLE IF NOT EXISTS Equipo (
   nombreDeFantasia varchar(255) NOT NULL,
+  idCategoria int,
   PRIMARY KEY (nombreDeFantasia)
 );
 
@@ -179,7 +180,7 @@ CREATE TABLE IF NOT EXISTS ParticipaEn (
   idCategoria int NOT NULL,
   dni int NOT NULL,
   PRIMARY KEY (idCategoria, dni),
-  FOREIGN KEY (idCategoria) REFERENCES Categoria (idCategoria),
+  FOREIGN KEY (idCategoria) REFERENCES CategoriaIndividual (idCategoria),
   FOREIGN KEY (dni) REFERENCES Participante (dni)
 );
 
@@ -196,3 +197,5 @@ CREATE TABLE IF NOT EXISTS CategoriaGrupal (
   FOREIGN KEY (nombreSegundoPuesto) REFERENCES Equipo (nombreDeFantasia),
   FOREIGN KEY (nombreTercerPuesto) REFERENCES Equipo (nombreDeFantasia)
 );
+
+ALTER TABLE Equipo ADD CONSTRAINT fk_id_categoria FOREIGN KEY (idCategoria) REFERENCES CategoriaGrupal(idCategoria);
