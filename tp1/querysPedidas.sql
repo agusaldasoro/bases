@@ -139,9 +139,63 @@ UNION ALL
 ORDER BY idCategoria, dni
 
 -- 5)
+SELECT nombreDeEscuela, tipo, COUNT(tipo) AS cantidad
+FROM (
+    SELECT Participante.nombreDeEscuela, puntaje
+    FROM (
+       SELECT dniPrimerPuesto AS dni, "ORO" AS tipo
+        FROM CategoriaIndividual
+      UNION ALL
+        SELECT dniSegundoPuesto AS dni, "PLATA" AS tipo
+        FROM CategoriaIndividual
+      UNION ALL
+        SELECT dniTercerPuesto AS dni, "BRONCE" AS tipo
+        FROM CategoriaIndividual
+    ) AS Dnis
+    JOIN Participante ON Participante.dni = Dnis.dni
+  UNION ALL
+    SELECT Participante.nombreDeEscuela, puntaje
+    FROM (
+        SELECT nombrePrimerPuesto AS nombre, "ORO" AS tipo
+        FROM CategoriaGrupal
+      UNION ALL
+        SELECT nombreSegundoPuesto AS nombre, "PLATA" AS tipo
+        FROM CategoriaGrupal
+      UNION ALL
+        SELECT nombreTercerPuesto AS nombre, "BRONCE" AS tipo
+        FROM CategoriaGrupal
+    ) AS Nombres
+    JOIN Competidor ON Competidor.titular = Nombres.nombre
+    JOIN Participante ON Competidor.dni = Participante.dni
+    GROUP BY Nombres.nombre, Participante.nombreDeEscuela
+) AS EscuelasYPuntaje
+GROUP BY nombreDeEscuela, tipo
+ORDER BY cantidad DESC;
 
 -- 6)
+SELECT *
+FROM Arbitro
+ORDER BY nombreDePais
 
 -- 7)
+SELECT Arbitro.*
+FROM (
+    SELECT CategoriaIndividual.idCategoria
+    FROM CategoriaIndividual
+    WHERE CategoriaIndividual.nombreDeModalidad = 'Combate'
+  UNION
+    SELECT CategoriaGrupal.idCategoria
+    FROM CategoriaGrupal
+    WHERE CategoriaGrupal.nombreDeModalidad = 'Combate Por Equipos'
+  ) AS CategoriasCombate
+JOIN Categoria ON CategoriasCombate.idCategoria = Categoria.idCategoria
+JOIN ArbitroCentral ON ArbitroCentral.numeroDeRing = Categoria.numeroDeRing
+JOIN Arbitro ON ArbitroCentral.numeroDePlaca = Arbitro.numeroDePlaca
 
 -- 8)
+SELECT DISTINCT Escuela.nombrePais, Equipo.nombreDeFantasia
+FROM Equipo
+JOIN Competidor ON Equipo.nombreDeFantasia = Competidor.titular
+JOIN Participante ON Competidor.dni = Participante.dni
+JOIN Escuela ON Participante.nombreDeEscuela = Escuela.nombre
+ORDER BY Escuela.nombrePais
