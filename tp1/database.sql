@@ -168,12 +168,12 @@ CREATE TABLE IF NOT EXISTS CategoriaIndividual (
   dniTercerPuesto int,
   PRIMARY KEY (idCategoria),
   FOREIGN KEY (idCategoria) REFERENCES Categoria (id),
-  FOREIGN KEY (nombreDeModalidad) REFERENCES Modalidad (nombre),
+  FOREIGN KEY (nombreDeModalidad) REFERENCES CompetenciaIndividual (nombre),
   FOREIGN KEY (nivelDeGraduacion) REFERENCES Graduacion (nivel),
   FOREIGN KEY (nombreDePeso) REFERENCES Peso (nombre),
-  FOREIGN KEY (dniPrimerPuesto) REFERENCES Participante (dni),
-  FOREIGN KEY (dniSegundoPuesto) REFERENCES Participante (dni),
-  FOREIGN KEY (dniTercerPuesto) REFERENCES Participante (dni)
+  FOREIGN KEY (dniPrimerPuesto) REFERENCES Competidor (dni),
+  FOREIGN KEY (dniSegundoPuesto) REFERENCES Competidor (dni),
+  FOREIGN KEY (dniTercerPuesto) REFERENCES Competidor (dni)
 );
 
 CREATE TABLE IF NOT EXISTS ParticipaEn (
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS ParticipaEn (
   dni int NOT NULL,
   PRIMARY KEY (idCategoria, dni),
   FOREIGN KEY (idCategoria) REFERENCES CategoriaIndividual (idCategoria),
-  FOREIGN KEY (dni) REFERENCES Participante (dni)
+  FOREIGN KEY (dni) REFERENCES Competidor (dni)
 );
 
 CREATE TABLE IF NOT EXISTS CategoriaGrupal (
@@ -192,7 +192,7 @@ CREATE TABLE IF NOT EXISTS CategoriaGrupal (
   nombreTercerPuesto varchar(255),
   PRIMARY KEY (idCategoria),
   FOREIGN KEY (idCategoria) REFERENCES Categoria (id),
-  FOREIGN KEY (nombreDeModalidad) REFERENCES Modalidad (nombre),
+  FOREIGN KEY (nombreDeModalidad) REFERENCES CompetenciaPorEquipos (nombre),
   FOREIGN KEY (nombrePrimerPuesto) REFERENCES Equipo (nombreDeFantasia),
   FOREIGN KEY (nombreSegundoPuesto) REFERENCES Equipo (nombreDeFantasia),
   FOREIGN KEY (nombreTercerPuesto) REFERENCES Equipo (nombreDeFantasia)
