@@ -148,11 +148,11 @@ CREATE TABLE IF NOT EXISTS Suplente (
 );
 
 CREATE TABLE IF NOT EXISTS Categoria (
-  idCategoria int NOT NULL,
+  id int NOT NULL,
   numeroDeRing int NOT NULL,
   genero char NOT NULL,
   nombreDeEdad varchar(255),
-  PRIMARY KEY (idCategoria),
+  PRIMARY KEY (id),
   FOREIGN KEY (numeroDeRing) REFERENCES Ring (numeroDeRing),
   FOREIGN KEY (genero) REFERENCES Genero (valor),
   FOREIGN KEY (nombreDeEdad) REFERENCES Edad (nombre)
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS CategoriaIndividual (
   dniSegundoPuesto int,
   dniTercerPuesto int,
   PRIMARY KEY (idCategoria),
-  FOREIGN KEY (idCategoria) REFERENCES Categoria (idCategoria),
+  FOREIGN KEY (idCategoria) REFERENCES Categoria (id),
   FOREIGN KEY (nombreDeModalidad) REFERENCES Modalidad (nombre),
   FOREIGN KEY (nivelDeGraduacion) REFERENCES Graduacion (nivel),
   FOREIGN KEY (nombreDePeso) REFERENCES Peso (nombre),
@@ -191,7 +191,7 @@ CREATE TABLE IF NOT EXISTS CategoriaGrupal (
   nombreSegundoPuesto varchar(255),
   nombreTercerPuesto varchar(255),
   PRIMARY KEY (idCategoria),
-  FOREIGN KEY (idCategoria) REFERENCES Categoria (idCategoria),
+  FOREIGN KEY (idCategoria) REFERENCES Categoria (id),
   FOREIGN KEY (nombreDeModalidad) REFERENCES Modalidad (nombre),
   FOREIGN KEY (nombrePrimerPuesto) REFERENCES Equipo (nombreDeFantasia),
   FOREIGN KEY (nombreSegundoPuesto) REFERENCES Equipo (nombreDeFantasia),

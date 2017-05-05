@@ -87,7 +87,7 @@ UNLOCK TABLES;
 LOCK TABLES `Categoria` WRITE;
 /*!40000 ALTER TABLE `Categoria` DISABLE KEYS */;
 
-INSERT INTO `Categoria` (`idCategoria`, `numeroDeRing`, `genero`, `nombreDeEdad`)
+INSERT INTO `Categoria` (`id`, `numeroDeRing`, `genero`, `nombreDeEdad`)
 VALUES
 	(1,1,'M','Adultos'),
 	(2,1,'F','Adultos'),
