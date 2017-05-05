@@ -111,23 +111,19 @@ UNION ALL
     Competidor.dni = CategoriaIndividual.dniTercerPuesto
   )
 UNION ALL
-  SELECT Competidor.dni AS dni, CategoriaGrupal.idCategoria, "Primero"
-  FROM Competidor
-  JOIN Equipo ON Equipo.nombreDeFantasia = Competidor.titular OR Equipo.nombreDeFantasia = Competidor.suplente
-  JOIN CategoriaGrupal ON Equipo.idCategoria = CategoriaGrupal.idCategoria
-  WHERE nombrePrimerPuesto IS NOT NULL
-UNION ALL
-  SELECT Competidor.dni AS dni, CategoriaGrupal.idCategoria, "Segundo"
-  FROM Competidor
-  JOIN Equipo ON Equipo.nombreDeFantasia = Competidor.titular OR Equipo.nombreDeFantasia = Competidor.suplente
-  JOIN CategoriaGrupal ON Equipo.idCategoria = CategoriaGrupal.idCategoria
-  WHERE nombreSegundoPuesto IS NOT NULL
-UNION ALL
-  SELECT Competidor.dni AS dni, CategoriaGrupal.idCategoria, "Tercero"
-  FROM Competidor
-  JOIN Equipo ON Equipo.nombreDeFantasia = Competidor.titular OR Equipo.nombreDeFantasia = Competidor.suplente
-  JOIN CategoriaGrupal ON Equipo.idCategoria = CategoriaGrupal.idCategoria
-  WHERE nombreTercerPuesto IS NOT NULL
+  SELECT Competidor.dni, Posiciones.idCategoria, Posiciones.posicion
+  FROM (
+      SELECT nombrePrimerPuesto AS nombreEquipo, idCategoria, "Primero" AS posicion
+      FROM CategoriaGrupal
+    UNION ALL
+      SELECT nombreSegundoPuesto AS nombreEquipo, idCategoria, "Segundo" AS posicion
+      FROM CategoriaGrupal
+    UNION ALL
+      SELECT nombreTercerPuesto AS nombreEquipo, idCategoria, "Tercero" AS posicion
+      FROM CategoriaGrupal
+  ) AS Posiciones
+  JOIN Equipo ON Equipo.nombreDeFantasia = Posiciones.nombreEquipo
+  JOIN Competidor ON Competidor.titular = Equipo.nombreDeFantasia OR Competidor.suplente = Equipo.nombreDeFantasia
 UNION ALL
   SELECT Competidor.dni, CategoriaGrupal.idCategoria, "No llega al podio"
   FROM Competidor
