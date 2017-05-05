@@ -1,18 +1,22 @@
 \section{Modelo Relacional}
 
-\entidad{Maestro Inscriptor}{\primaryKey{n\'umeroDePlacaInstructor}, nombre, apellido, numeroDeCertificado, \ForeignKey{nombreDeGraduación}, \ForeignKey{nombreDeEscuela} }
+\entidad{Maestro Inscriptor}{\primaryKey{n\'umeroDePlacaInstructor}, nombre, apellido, n\'umeroDeCertificado, \ForeignKey{nivelDeGraduación}, \ForeignKey{nombreDeEscuela} }
 
-\textbf{PK} = \textbf{CK} = \{ numeroDePlacaInstructor \}
+\textbf{PK} = \textbf{CK} = \{ n\'umeroDePlacaInstructor \}
 
-\textbf{FK} = \{ nnivelDeGraduación,nombreDeEscuela \}
+\textbf{FK} = \{ nivelDeGraduación, nombreDeEscuela \}
 
 \textit{MaestroInscriptor.nivelDeGraduación} debe estar en \textit{Graduación.nivel}
 
 \textit{MaestroInscriptor.nombreDeEscuela} debe estar en \textit{Escuela.Nombre}\\
 
-\entidad{Escuela}{\primaryKey{nombre}, \ForeignKey{nombrePais}}
+\entidad{Escuela}{\primaryKey{nombre}, \ForeignKey{nombrePa\'is}}
 
-\textbf{PK} = \textbf{CK} = \{ nombre \}\\
+\textbf{PK} = \textbf{CK} = \{ nombre \}
+
+\textbf{FK} = \{ nombrePa\'is \}
+
+\textit{Escuela.nombrePa\'is} debe estar en \textit{Pa\'is.nombre}\\
 
 \entidad{País}{\primaryKey{nombre}}
 
@@ -22,7 +26,7 @@
 
 \textbf{PK} = \textbf{CK} = \{ nivel \}\\
 
-\entidad{Participante}{\primaryKey{DNI}, n\'umeroDeCertificado, nombre, apellido, \ForeignKey{nombreDeEscuela}, \ForeignKey{nivelDeGraduación}, foto}
+\entidad{Participante}{\primaryKey{DNI}, n\'umeroDeCertificado, nombre, apellido, foto, \ForeignKey{nombreDeEscuela}, \ForeignKey{nivelDeGraduación}}
 
 \textbf{PK} = \textbf{CK} = \{ DNI \}
 
@@ -52,15 +56,15 @@
 
 \textit{Competidor.suplente} puede tener o no valor
 
-\textit{Competidor.titular} debe estar en \textit{Equipo.nombreDeFantasia}
+\textit{Competidor.titular} debe estar en \textit{Equipo.nombreDeFantas\'ia}
 
-\textit{Competidor.suplente} debe estar en \textit{Equipo.nombreDeFantasia}\\
+\textit{Competidor.suplente} debe estar en \textit{Equipo.nombreDeFantas\'ia}\\
 
-\entidad{Edad}{\primaryKey{nombre},edadMinima, edadMáxima}
+\entidad{Edad}{\primaryKey{nombre}, edadM\'inima, edadMáxima}
 
 \textbf{PK} = \textbf{CK} = \{ nombre \}\\
 
-\entidad{Peso}{\primaryKey{nombre}, pesoMinimo, pesoMáximo}
+\entidad{Peso}{\primaryKey{nombre}, pesoM\'inimo, pesoMáximo}
 
 \textbf{PK} = \textbf{CK} = \{ nombre \}\\
 
@@ -74,7 +78,7 @@
 
 \textbf{PK} = \textbf{CK} = \textbf{FK} = \{ nombre \}
 
-\textit{CompetendiaIndividual.nombre} debe estar en \textit{Modalidad.nombre}\\
+\textit{CompetenciaIndividual.nombre} debe estar en \textit{Modalidad.nombre}\\
 
 \entidad{CombatePorEquipos}{\primaryKey{\ForeignKey{nombre}}}
 
@@ -82,25 +86,29 @@
 
 \textit{CombatePorEquipos.nombre} debe estar en \textit{Modalidad.nombre}\\
 
-\entidad{Equipo}{\primaryKey{nombreDeFantasia}}
+\entidad{Equipo}{\primaryKey{nombreDeFantas\'ia}, \ForeignKey{idCategor\'ia}}
 
-\textbf{PK} = \textbf{CK} = \{ nombreDeFantasia \}\\
+\textbf{PK} = \textbf{CK} = \{ nombreDeFantas\'ia \}
+
+\textbf{FK} = \{ idCategor\'ia \}
+
+\textit{idCategor\'ia} est\'a en \textit{Categor\'iaGrupal.id}\\
 
 \entidad{Género}{\primaryKey{valor}}
 
-\textbf{PK} = \textbf{CK} = \{ valor \}
+\textbf{PK} = \textbf{CK} = \{ valor \}\\
 
-\entidad{Ring}{\primaryKey{numeroDeRing}}
+\entidad{Ring}{\primaryKey{n\'umeroDeRing}}
 
 \textbf{PK} = \textbf{CK} = \{ númeroDeRing \}\\
 
-\entidad{Árbitro}{\primaryKey{n\'umeroDePlaca}, nombre, apellido, \ForeignKey{nombreDePaís}, \ForeignKey{graduación}}
+\entidad{Árbitro}{\primaryKey{n\'umeroDePlaca}, nombre, apellido, \ForeignKey{nombreDePaís}, \ForeignKey{nivelDeGraduación}}
 
-\textbf{PK} = \textbf{CK} = \{ numeroDePlaca \}
+\textbf{PK} = \textbf{CK} = \{ n\'umeroDePlaca \}
 
-\textbf{FK} = \{ nombreDePaís, graduación \}
+\textbf{FK} = \{ nombreDePaís, nivelDeGraduación \}
 
-\textit{Árbitro.graduación} debe estar en \textit{graduación.valor}
+\textit{Árbitro.nivelDeGraduación} debe estar en \textit{Graduación.nivel}
 
 \textit{Árbitro.nombreDePaís} debe estar en \textit{País.nombre}
 
@@ -114,7 +122,7 @@
 
 \textit{Juez.númeroDeRing} debe estar en \textit{Ring.númeroDeRing}
 
-\textit{Juez.númeroDePlaca} debe estar en \textit{Árbitro.númeroDePlace}\\
+\textit{Juez.númeroDePlaca} debe estar en \textit{Árbitro.númeroDePlaca}\\
 
 \entidad{ÁrbitroCentral}{\primaryKey{\ForeignKey{númeroDePlaca}}, \ForeignKey{númeroDeRing}}
 
@@ -124,7 +132,7 @@
  
 \textit{ÁrbitroCentral.númeroDeRing} debe estar en \textit{Ring.númeroDeRing}
 
-\textit{ÁrbitroCentral.númeroDePlaca} debe estar en \textit{Ring.númeroDePlaca}\\
+\textit{ÁrbitroCentral.númeroDePlaca} debe estar en \textit{Árbitro.númeroDePlaca}\\
 
 \entidad{PresidenteDeMesa}{\primaryKey{\ForeignKey{númeroDePlaca}}, \ForeignKey{númeroDeRing}}
 
@@ -134,26 +142,39 @@
  
 \textit{PresidenteDeMesa.númeroDeRing} debe estar en \textit{Ring.númeroDeRing}
 
-\textit{PresidenteDeMesa.númeroDePlaca} debe estar en \textit{Ring.númeroDePlaca}\\
+\textit{PresidenteDeMesa.númeroDePlaca} debe estar en \textit{Árbitro.númeroDePlaca}\\
 
-\entidad{Categoría}{\primaryKey{idCategoría}, \ForeignKey{númeroDeRing}, \ForeignKey{género}, \ForeignKey{nombreDeEdad}}
+\entidad{Suplente}{\primaryKey{\ForeignKey{númeroDePlaca}}, \ForeignKey{númeroDeRing}}
 
-\textbf{CK} = \textbf{PK} = \{ idCategoria \}
+\textbf{CK} = \textbf{PK} = \{ númeroDePlaca \}
+ 
+\textbf{FK} = \{ númeroDePlaca, númeroDeRing \}
+ 
+\textit{Suplente.númeroDeRing} debe estar en \textit{Ring.númeroDeRing}
 
-\textbf{FK} = \{ númeroDeRing, nombreDeEdad, género\}
+\textit{Suplente.númeroDePlaca} debe estar en \textit{Árbitro.númeroDePlaca}\\
 
-\textit{Categoría.númeroDeRing} debe estar en \textit{Ring.Numero}
+\entidad{Categoría}{\primaryKey{id}, \ForeignKey{númeroDeRing}, \ForeignKey{género}, \ForeignKey{nombreDeEdad}}
+
+\textbf{CK} = \textbf{PK} = \{ id \}
+
+\textbf{FK} = \{ númeroDeRing, género, nombreDeEdad\}
+
+\textit{Categoría.númeroDeRing} debe estar en \textit{Ring.N\'umero}
 
 \textit{Categoría.nombreDeEdad} debe estar en \textit{Género.valor}
 
-\textit{Categoría.nombreDeEdad} debe estar en \textit{Edad.nombre}\\
+\textit{Categoría.nombreDeEdad} debe estar en \textit{Edad.nombre}
 
-\entidad{Categoría Individual}{\primaryKey{\ForeignKey{idCategoría}}, \ForeignKey{nombreDeModalidad}, \ForeignKey{nivelDeGraduación},\ForeignKey{nombreDePeso}, \ForeignKey{DNIPrimerPuesto}, \ForeignKey{DNISegundoPuesto},\ForeignKey{DNITercerPuesto}}
+\textit{Categor\'ia.id} debe estar en \textit{Categor\'iaIndividual.id} o en \textit{Categor\'iaGrupal.id}\\
 
-\textbf{CK} = \textbf{PK} = \{ idCategoria \}
+\entidad{Categoría Individual}{\primaryKey{\ForeignKey{idCategoría}}, \ForeignKey{nombreDeModalidad}, \ForeignKey{nivelDeGraduación}, \ForeignKey{nombreDePeso}, \ForeignKey{DNIPrimerPuesto}, \ForeignKey{DNISegundoPuesto}, \ForeignKey{DNITercerPuesto}}
 
-\textbf{FK} = \{ nombreDeModalidad, nivelDeGraduación,nombreDePeso, DNIPrimerPuesto, DNISegundoPuesto, DNITercerPuesto\}
+\textbf{CK} = \textbf{PK} = \{ idCategor\'ia \}
 
+\textbf{FK} = \{ nombreDeModalidad, nivelDeGraduación, nombreDePeso, DNIPrimerPuesto, DNISegundoPuesto, DNITercerPuesto\}
+
+\textit{CategoríaIndividual.nombreDeModalidad} debe estar en \textit{CompetenciaIndividual.nombre}
 
 \textit{CategoríaIndividual.nivelDeGraduación} debe estar en \textit{Graduación.nivel}
 
@@ -179,23 +200,23 @@
 
 \entidad{ParticipaEn}{\primaryKey{\ForeignKey{idCategoría},\ForeignKey{DNI}}}
 
-\textbf{CK} = \textbf{PK} = \{ (idCategoria, DNI) \}
+\textbf{CK} = \textbf{PK} = \{ (idCategor\'ia, DNI) \}
 
-\textbf{FK} = \{ (idCategoria, DNI) \}
+\textbf{FK} = \{ (idCategor\'ia, DNI) \}
 
 \textit{ParticipaEn.idCategoría} debe estar en \textit{CategoríaIndividual.idCategoría}
 
 \textit{ParticipaEn.DNI} debe estar en \textit{Competidor.DNI}\\
 
-\entidad{Categoría Grupal}{\primaryKey{\ForeignKey{idCategoría}},\ForeignKey{nombreDeModalidad}, \ForeignKey{NombrePrimerPuesto}, \ForeignKey{nombreSegundoPuesto},\ForeignKey{nombreTercerPuesto}}
+\entidad{Categoría Grupal}{\primaryKey{\ForeignKey{idCategoría}}, \ForeignKey{nombreDeModalidad}, \ForeignKey{nombrePrimerPuesto}, \ForeignKey{nombreSegundoPuesto}, \ForeignKey{nombreTercerPuesto}}
 
-\textbf{CK} = \textbf{PK} = \{ idCategoria \}
+\textbf{CK} = \textbf{PK} = \{ idCategor\'ia \}
 
-\textbf{FK} = \{ nombreDeModalidad,  NombrePrimerPuesto, nombreSegundoPuesto, nombreTercerPuesto\}
+\textbf{FK} = \{ nombreDeModalidad,  nombrePrimerPuesto, nombreSegundoPuesto, nombreTercerPuesto\}
+
+\textit{CategoríaGrupal.idCategoría} debe estar en \textit{Categoría.id}
 
 \textit{CategoríaGrupal.nombreDeModalidad} debe estar en \textit{CombatePorEquipos.nombre}
-
-\textit{CategoríaGrupal.idCategoría} debe estar en \textit{Categoría.idCategoría}
 
 \textit{CategoríaGrupal.nombrePrimerPuesto} debe estar en \textit{Equipo.nombre}
 
@@ -207,4 +228,4 @@
 
 \textit{CategoríaGrupal.nombreTercerPuesto} debe estar en \textit{Equipo.nombre}
 
-\textit{CategoríaGrupal.nombreTercerPuesto} puede o no ser nulo.\\
+\textit{CategoríaGrupal.nombreTercerPuesto} puede o no ser nulo.
