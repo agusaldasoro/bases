@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.6.34)
 # Database: tp1
-# Generation Time: 2017-05-04 19:58:19 +0000
+# Generation Time: 2017-05-07 19:57:56 +0000
 # ************************************************************
 
 
@@ -203,11 +203,11 @@ VALUES
 	(13,50,'2017-05-04',NULL,'Milasecta','M'),
 	(14,50,'2017-05-04',NULL,'Milasecta','M'),
 	(15,50,'2017-05-04',NULL,'Milasecta','M'),
-	(16,50,'2017-05-04',NULL,NULL,'F'),
-	(17,50,'2017-05-04',NULL,NULL,'F'),
-	(18,50,'2017-05-04',NULL,NULL,'F'),
-	(19,50,'2017-05-04',NULL,NULL,'F'),
-	(20,50,'2017-05-04',NULL,NULL,'F'),
+	(16,50,'2017-05-04',NULL,'Otro Equipo','F'),
+	(17,50,'2017-05-04',NULL,'Otro Equipo','F'),
+	(18,50,'2017-05-04',NULL,'Otro Equipo','F'),
+	(19,50,'2017-05-04',NULL,'Otro Equipo','F'),
+	(20,50,'2017-05-04',NULL,'Otro Equipo','F'),
 	(21,50,'2017-05-04',NULL,NULL,'F'),
 	(22,50,'2017-05-04',NULL,NULL,'F'),
 	(23,50,'2017-05-04',NULL,NULL,'F'),
@@ -221,7 +221,10 @@ VALUES
 	(31,50,'2017-05-04','Pizzasecta',NULL,'M'),
 	(32,50,'2017-05-04','Milasecta',NULL,'M'),
 	(33,50,'2017-05-04','Milasecta',NULL,'M'),
-	(34,50,'2017-05-04','Milasecta',NULL,'M');
+	(34,50,'2017-05-04','Milasecta',NULL,'M'),
+	(35,50,'2017-05-04','Otro Equipo',NULL,'F'),
+	(36,50,'2017-05-04','Otro Equipo',NULL,'F'),
+	(37,50,'2017-05-04','Otro Equipo',NULL,'F');
 
 /*!40000 ALTER TABLE `Competidor` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -250,9 +253,10 @@ LOCK TABLES `Equipo` WRITE;
 
 INSERT INTO `Equipo` (`nombreDeFantasia`, `idCategoria`)
 VALUES
-	('Hambursecta', 1),
-	('Milasecta', 1),
-	('Pizzasecta', 1);
+	('Hambursecta',1),
+	('Milasecta',1),
+	('Otro Equipo',1),
+	('Pizzasecta',1);
 
 /*!40000 ALTER TABLE `Equipo` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -391,11 +395,16 @@ LOCK TABLES `ParticipaEn` WRITE;
 INSERT INTO `ParticipaEn` (`idCategoria`, `dni`)
 VALUES
 	(2,1),
+	(4,1),
 	(2,2),
 	(2,3),
+	(2,4),
+	(2,5),
+	(4,6),
 	(4,7),
 	(4,8),
-	(4,9);
+	(4,9),
+	(4,10);
 
 /*!40000 ALTER TABLE `ParticipaEn` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -442,7 +451,10 @@ VALUES
 	(31,31,'Juan','Suplente','Montevideo',2,'Foto'),
 	(32,32,'Juan','Suplente','Asuncion',3,'Foto'),
 	(33,33,'Juan','Suplente','Asuncion',3,'Foto'),
-	(34,34,'Juan','Suplente','Asuncion',3,'Foto');
+	(34,34,'Juan','Suplente','Asuncion',3,'Foto'),
+	(35,35,'Juan','Perez','Sao Paulo',4,'Foto'),
+	(36,36,'Juan','Perez','Sao Paulo',4,'Foto'),
+	(37,37,'Juan','Perez','Sao Paulo',4,'Foto');
 
 /*!40000 ALTER TABLE `Participante` ENABLE KEYS */;
 UNLOCK TABLES;
