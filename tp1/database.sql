@@ -97,7 +97,6 @@ CREATE TABLE IF NOT EXISTS Competidor (
 
 CREATE TABLE IF NOT EXISTS CompetenciaIndividual (
   nombre varchar(255) NOT NULL,
-  tipo varchar(255) NOT NULL,
   PRIMARY KEY (nombre),
   FOREIGN KEY (nombre) REFERENCES Modalidad (nombre)
 );
