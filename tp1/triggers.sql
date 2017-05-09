@@ -22,9 +22,9 @@ FOR EACH ROW BEGIN
       JOIN Participante ON Competidor.dni = Participante.dni
       JOIN Escuela ON Participante.nombreDeEscuela = Escuela.nombre
       WHERE Escuela.nombre IN (
-        SELECT Participante.nombreDeEscuela
+        SELECT nombreDeEscuela
         FROM Participante
-        WHERE Participante.dni = NEW.dni
+        WHERE dni = NEW.dni
       )
     ) >= (
       SELECT COUNT(1)
@@ -32,9 +32,9 @@ FOR EACH ROW BEGIN
       JOIN Participante ON Coach.dni = Participante.dni
       JOIN Escuela ON Participante.nombreDeEscuela = Escuela.nombre
       WHERE Escuela.nombre IN (
-        SELECT Participante.nombreDeEscuela
+        SELECT nombreDeEscuela
         FROM Participante
-        WHERE Participante.dni = NEW.dni
+        WHERE dni = NEW.dni
       )
     )
   ) THEN
@@ -52,13 +52,13 @@ CREATE TRIGGER competidor_after_insert AFTER INSERT ON Competidor
 FOR EACH ROW BEGIN
   IF (
     (
-      SELECT COUNT(nombreDeEscuela)
+      SELECT COUNT(DISTINCT nombreDeEscuela)
       FROM Competidor
       JOIN Participante ON Competidor.dni = Participante.dni
-      WHERE NEW.titular = Competidor.titular OR
-            NEW.suplente = Competidor.suplente OR
-            NEW.titular = Competidor.suplente OR
-            NEW.suplente = Competidor.titular
+      WHERE NEW.titular = titular OR
+            NEW.suplente = suplente OR
+            NEW.titular = suplente OR
+            NEW.suplente = titular
     ) > 1
   ) THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Los competidores de un equipo deben ser de la misma escuela';
@@ -73,15 +73,6 @@ FOR EACH ROW BEGIN
   ) THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Un competidor solo puede ser titular o suplente';
 
-  ELSEIF (
-    EXISTS (
-      SELECT 1
-      FROM Competidor
-      WHERE NEW.dni = Competidor.dni AND (NEW.titular = Competidor.titular OR NEW.suplente = Competidor.suplente)
-    )
-  ) THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Se necesita agregar al menos un coach mas';
-
   END IF;
 END; $$
 
@@ -92,10 +83,10 @@ FOR EACH ROW BEGIN
       SELECT COUNT(nombreDeEscuela)
       FROM Competidor
       JOIN Participante ON Competidor.dni = Participante.dni
-      WHERE NEW.titular = Competidor.titular OR
-            NEW.suplente = Competidor.suplente OR
-            NEW.titular = Competidor.suplente OR
-            NEW.suplente = Competidor.titular
+      WHERE NEW.titular = titular OR
+            NEW.suplente = suplente OR
+            NEW.titular = suplente OR
+            NEW.suplente = titular
     ) > 1
   ) THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Los competidores de un equipo deben ser de la misma escuela';
@@ -123,6 +114,64 @@ FOR EACH ROW BEGIN
   ) THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ya esta anotado para esta modalidad';
 
+  ELSEIF (
+    (
+      SELECT genero
+      FROM Categoria
+      WHERE id = NEW.idCategoria
+    ) <> (
+      SELECT sexo
+      FROM Competidor
+      WHERE dni = NEW.dni
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El sexo del participante no corresponde con la categoria';
+
+  ELSEIF (
+    NOT EXISTS (
+      SELECT 1
+      FROM Competidor
+      WHERE dni = NEW.dni AND TIMESTAMPDIFF(YEAR, fechaDeNacimiento, CURDATE()) >= (
+        SELECT edadMinima
+        FROM Categoria
+        JOIN Edad ON Edad.nombre = Categoria.nombreDeEdad
+        WHERE id = NEW.idCategoria
+      ) AND TIMESTAMPDIFF(YEAR, fechaDeNacimiento, CURDATE()) <= (
+        SELECT edadMaxima
+        FROM Categoria
+        JOIN Edad ON Edad.nombre = Categoria.nombreDeEdad
+        WHERE id = NEW.idCategoria
+      )
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La edad del participante no corresponde con la categoria';
+
+  ELSEIF (
+    (
+      SELECT nombreDeModalidad
+      FROM CategoriaIndividual
+      WHERE idCategoria = NEW.idCategoria
+    ) = 'Combate'
+    AND (
+      NOT EXISTS (
+        SELECT 1
+        FROM Competidor
+        WHERE dni = NEW.dni AND peso >= (
+          SELECT pesoMinimo
+          FROM CategoriaIndividual
+          JOIN Peso ON Peso.nombre = CategoriaIndividual.nombreDePeso
+          WHERE idCategoria = NEW.idCategoria
+        ) AND peso <= (
+          SELECT pesoMaximo
+          FROM CategoriaIndividual
+          JOIN Peso ON Peso.nombre = CategoriaIndividual.nombreDePeso
+          WHERE idCategoria = NEW.idCategoria
+        )
+      )
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El peso del participante no corresponde con la categoria';
+
   END IF;
 END; $$
 
@@ -146,6 +195,57 @@ FOR EACH ROW BEGIN
   ) THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ya esta anotado para esta modalidad';
 
+  ELSEIF (
+    (
+      SELECT genero
+      FROM Categoria
+      WHERE id = NEW.idCategoria
+    ) <> (
+      SELECT sexo
+      FROM Competidor
+      WHERE dni = NEW.dni
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El sexo del participante no corresponde con la categoria';
+
+  ELSEIF (
+    NOT EXISTS (
+      SELECT 1
+      FROM Competidor
+      WHERE dni = NEW.dni AND TIMESTAMPDIFF(YEAR, fechaDeNacimiento, CURDATE()) >= (
+        SELECT edadMinima
+        FROM Categoria
+        JOIN Edad ON Edad.nombre = Categoria.nombreDeEdad
+        WHERE id = NEW.idCategoria
+      ) AND TIMESTAMPDIFF(YEAR, fechaDeNacimiento, CURDATE()) <= (
+        SELECT edadMaxima
+        FROM Categoria
+        JOIN Edad ON Edad.nombre = Categoria.nombreDeEdad
+        WHERE id = NEW.idCategoria
+      )
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La edad del participante no corresponde con la categoria';
+
+  ELSEIF (
+    NOT EXISTS (
+      SELECT 1
+      FROM Competidor
+      WHERE dni = NEW.dni AND peso >= (
+        SELECT pesoMinimo
+        FROM CategoriaIndividual
+        JOIN Peso ON Peso.nombre = CategoriaIndividual.nombreDePeso
+        WHERE idCategoria = NEW.idCategoria
+      ) AND TIMESTAMPDIFF(YEAR, fechaDeNacimiento, CURDATE()) <= (
+        SELECT pesoMaximo
+        FROM CategoriaIndividual
+        JOIN Peso ON Peso.nombre = CategoriaIndividual.nombreDePeso
+        WHERE idCategoria = NEW.idCategoria
+      )
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El peso del participante no corresponde con la categoria';
+
   END IF;
 END; $$
 
@@ -160,7 +260,7 @@ END; $$
 --     ) < (
 --       SELECT nivelDeGraduacion
 --       FROM Arbitro
---       WHERE Arbitro.numeroDePlaca = NEW.numeroDePlaca
+--       WHERE numeroDePlaca = NEW.numeroDePlaca
 --     )
 --   ) THEN
 --     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El nivel del arbitro debe ser superior al que arbitra';
@@ -195,6 +295,18 @@ FOR EACH ROW BEGIN
   ) THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La modalidad Formas no clasifica por graduacion';
 
+  ELSEIF (
+    (
+      NEW.nombreDePeso IS NOT NULL AND
+      (
+        NEW.nombreDeModalidad = 'Formas' OR
+        NEW.nombreDeModalidad = 'Salto' OR
+        NEW.nombreDeModalidad = 'Rotura de Potencia'
+      )
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La modalidad Combate es la unica que clasifica por peso';
+
   END IF;
 END; $$
 
@@ -211,6 +323,7 @@ FOR EACH ROW BEGIN
       NEW.dniPrimerPuesto IS NULL AND (NEW.dniSegundoPuesto IS NOT NULL OR NEW.dniTercerPuesto IS NOT NULL)
   ) THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No puede haber segundo o tercero sin primero';
+
   ELSEIF (
       NEW.dniPrimerPuesto IS NOT NULL AND NEW.dniSegundoPuesto IS NULL AND NEW.dniTercerPuesto IS NOT NULL
   ) THEN
@@ -251,6 +364,15 @@ FOR EACH ROW BEGIN
   ) THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La modalidad Formas no clasifica por graduacion';
 
+  ELSEIF (
+    NEW.nombreDePeso IS NOT NULL AND (
+      NEW.nombreDeModalidad = 'Formas' OR
+      NEW.nombreDeModalidad = 'Salto' OR
+      NEW.nombreDeModalidad = 'Rotura de Potencia'
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La modalidad Combate es la unica que clasifica por peso';
+
   END IF;
 END; $$
 
@@ -267,6 +389,7 @@ FOR EACH ROW BEGIN
       NEW.nombrePrimerPuesto IS NULL AND (NEW.nombreSegundoPuesto IS NOT NULL OR NEW.nombreTercerPuesto IS NOT NULL)
   ) THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No puede haber segundo o tercero sin primero';
+
   ELSEIF (
       NEW.nombrePrimerPuesto IS NOT NULL AND NEW.nombreSegundoPuesto IS NULL AND NEW.nombreTercerPuesto IS NOT NULL
   ) THEN
