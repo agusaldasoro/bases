@@ -5,11 +5,16 @@ DROP TRIGGER IF EXISTS competidor_after_update;
 DROP TRIGGER IF EXISTS participa_en_insert;
 DROP TRIGGER IF EXISTS participa_en_update;
 DROP TRIGGER IF EXISTS juez_insert;
+DROP TRIGGER IF EXISTS presidente_de_mesa_insert;
+DROP TRIGGER IF EXISTS arbitro_central_insert;
+DROP TRIGGER IF EXISTS suplente_insert;
 DROP TRIGGER IF EXISTS graduacion_insert;
 DROP TRIGGER IF EXISTS graduacion_update;
 DROP TRIGGER IF EXISTS categoria_individual_insert;
 DROP TRIGGER IF EXISTS categoria_individual_update;
 DROP TRIGGER IF EXISTS categoria_grupal_update;
+DROP TRIGGER IF EXISTS equipo_insert;
+DROP TRIGGER IF EXISTS equipo_after_update;
 
 DELIMITER $$
 
@@ -80,7 +85,7 @@ CREATE TRIGGER competidor_after_update AFTER UPDATE ON Competidor
 FOR EACH ROW BEGIN
   IF (
     (
-      SELECT COUNT(nombreDeEscuela)
+      SELECT COUNT(DISTINCT nombreDeEscuela)
       FROM Competidor
       JOIN Participante ON Competidor.dni = Participante.dni
       WHERE NEW.titular = titular OR
@@ -113,6 +118,19 @@ FOR EACH ROW BEGIN
     )
   ) THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Ya esta anotado para esta modalidad';
+
+  ELSEIF (
+    (
+      SELECT genero
+      FROM Categoria
+      WHERE id = NEW.idCategoria
+    ) <> (
+      SELECT sexo
+      FROM Competidor
+      WHERE dni = NEW.dni
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El sexo del participante no corresponde con la categoria';
 
   ELSEIF (
     (
@@ -249,24 +267,81 @@ FOR EACH ROW BEGIN
   END IF;
 END; $$
 
--- CREATE TRIGGER juez_insert BEFORE INSERT ON Juez
--- FOR EACH ROW BEGIN
---   IF (
---     (
---       SELECT MAX(nivelDeGraduacion)
---       FROM CategoriaIndividual
---       JOIN Categoria ON CategoriaIndividual.idCategoria = Categoria.id
---       WHERE Categoria.numeroDeRing = NEW.numeroDeRing
---     ) < (
---       SELECT nivelDeGraduacion
---       FROM Arbitro
---       WHERE numeroDePlaca = NEW.numeroDePlaca
---     )
---   ) THEN
---     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El nivel del arbitro debe ser superior al que arbitra';
+CREATE TRIGGER juez_insert BEFORE INSERT ON Juez
+FOR EACH ROW BEGIN
+  IF (
+    (
+      SELECT MAX(nivelDeGraduacion)
+      FROM CategoriaIndividual
+      JOIN Categoria ON CategoriaIndividual.idCategoria = Categoria.id
+      WHERE Categoria.numeroDeRing = NEW.numeroDeRing
+    ) >= (
+      SELECT nivelDeGraduacion
+      FROM Arbitro
+      WHERE numeroDePlaca = NEW.numeroDePlaca
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El nivel del arbitro debe ser superior al que arbitra';
 
---   END IF;
--- END; $$
+  END IF;
+END; $$
+
+CREATE TRIGGER presidente_de_mesa_insert BEFORE INSERT ON PresidenteDeMesa
+FOR EACH ROW BEGIN
+  IF (
+    (
+      SELECT MAX(nivelDeGraduacion)
+      FROM CategoriaIndividual
+      JOIN Categoria ON CategoriaIndividual.idCategoria = Categoria.id
+      WHERE Categoria.numeroDeRing = NEW.numeroDeRing
+    ) >= (
+      SELECT nivelDeGraduacion
+      FROM Arbitro
+      WHERE numeroDePlaca = NEW.numeroDePlaca
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El nivel del arbitro debe ser superior al que arbitra';
+
+  END IF;
+END; $$
+
+CREATE TRIGGER arbitro_central_insert BEFORE INSERT ON ArbitroCentral
+FOR EACH ROW BEGIN
+  IF (
+    (
+      SELECT MAX(nivelDeGraduacion)
+      FROM CategoriaIndividual
+      JOIN Categoria ON CategoriaIndividual.idCategoria = Categoria.id
+      WHERE Categoria.numeroDeRing = NEW.numeroDeRing
+    ) >= (
+      SELECT nivelDeGraduacion
+      FROM Arbitro
+      WHERE numeroDePlaca = NEW.numeroDePlaca
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El nivel del arbitro debe ser superior al que arbitra';
+
+  END IF;
+END; $$
+
+CREATE TRIGGER suplente_insert BEFORE INSERT ON Suplente
+FOR EACH ROW BEGIN
+  IF (
+    (
+      SELECT MAX(nivelDeGraduacion)
+      FROM CategoriaIndividual
+      JOIN Categoria ON CategoriaIndividual.idCategoria = Categoria.id
+      WHERE Categoria.numeroDeRing = NEW.numeroDeRing
+    ) >= (
+      SELECT nivelDeGraduacion
+      FROM Arbitro
+      WHERE numeroDePlaca = NEW.numeroDePlaca
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El nivel del arbitro debe ser superior al que arbitra';
+
+  END IF;
+END; $$
 
 CREATE TRIGGER graduacion_insert BEFORE INSERT ON Graduacion
 FOR EACH ROW BEGIN
@@ -424,6 +499,38 @@ FOR EACH ROW BEGIN
     )
   ) THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El tercer puesto debe haber participado en la categoria';
+
+  END IF;
+END; $$
+
+CREATE TRIGGER equipo_insert BEFORE INSERT ON Equipo
+FOR EACH ROW BEGIN
+  IF (
+    NEW.idCategoria IS NOT NULL
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Un equipo debe tener 5 titulares y 3 suplentes';
+
+  END IF;
+END; $$
+
+CREATE TRIGGER equipo_after_update AFTER UPDATE ON Equipo
+FOR EACH ROW BEGIN
+  IF (
+    NEW.idCategoria IS NOT NULL AND (
+      (
+        SELECT COUNT(1)
+        FROM Competidor
+        WHERE titular = NEW.nombreDeFantasia
+      ) <> 5
+    OR
+      (
+        SELECT COUNT(1)
+        FROM Competidor
+        WHERE suplente = NEW.nombreDeFantasia
+      ) <> 3
+    )
+  ) THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Un equipo debe tener 5 titulares y 3 suplentes';
 
   END IF;
 END; $$
